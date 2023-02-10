@@ -11,7 +11,7 @@ type Props = {
 	title: string
 	tasks: Task[]
 	removeTask: (id: number) => void
-	changeIsDone: (task: Task) => void
+	changeIsDone: (id: number) => void
 	changeFilter: (value: FilterValues) => void
 }
 
@@ -26,7 +26,7 @@ export function Todolist({ title, tasks, removeTask, changeIsDone, changeFilter 
 			<ul>
 				{tasks.map(t => (
 					<li key={t.id}>
-						<input type='checkbox' checked={t.isDone} onChange={() => changeIsDone(t)} />
+						<input type='checkbox' checked={t.isDone} onChange={() => changeIsDone(t.id)} />
 						<span>{t.title}</span>
 						<button onClick={() => removeTask(t.id)}>X</button>
 					</li>

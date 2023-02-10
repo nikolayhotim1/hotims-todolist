@@ -16,8 +16,8 @@ export default function App() {
 		{ id: 8, title: 'Ant Design', isDone: true }
 	])
 	const [filter, setFilter] = useState<FilterValues>('all')
-
 	let tasksForTodolist = tasks
+
 	if (filter === 'active') {
 		tasksForTodolist = tasks.filter(t => !t.isDone)
 	} else if (filter === 'completed') {
@@ -27,10 +27,22 @@ export default function App() {
 	function removeTask(id: number) {
 		setTasks(tasks.filter(t => t.id !== id))
 	}
-	function changeIsDone(task: Task) {
-		task.isDone = !task.isDone
-		setTasks([...tasks])
+
+	function changeIsDone(id: number) {
+		setTasks(
+			tasks.map(t => {
+				if (t.id !== id) {
+					return t
+				} else {
+					return {
+						...t,
+						isDone: !t.isDone
+					}
+				}
+			})
+		)
 	}
+
 	function changeFilter(value: FilterValues) {
 		setFilter(value)
 	}
