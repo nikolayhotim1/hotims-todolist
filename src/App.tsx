@@ -18,39 +18,33 @@ export default function App() {
 	const [filter, setFilter] = useState<FilterValues>('all')
 	let tasksForTodolist = tasks
 
-	if (filter === 'active') {
-		tasksForTodolist = tasks.filter(t => !t.isDone)
-	} else if (filter === 'completed') {
-		tasksForTodolist = tasks.filter(t => t.isDone)
+	function changeIsDone(id: number) {
+		setTasks(tasks.map(t => (t.id !== id ? t : { ...t, isDone: !t.isDone })))
 	}
 
 	function removeTask(id: number) {
 		setTasks(tasks.filter(t => t.id !== id))
 	}
 
-	function changeIsDone(id: number) {
-		setTasks(
-			tasks.map(t => {
-				if (t.id !== id) {
-					return t
-				} else {
-					return {
-						...t,
-						isDone: !t.isDone
-					}
-				}
-			})
-		)
-	}
-
 	function changeFilter(value: FilterValues) {
 		setFilter(value)
+	}
+
+	switch (filter) {
+		case 'active':
+			tasksForTodolist = tasks.filter(t => !t.isDone)
+			break
+		case 'completed':
+			tasksForTodolist = tasks.filter(t => t.isDone)
+			break
+		default:
+			break
 	}
 
 	return (
 		<div className='App'>
 			<Todolist
-				title='Frontend'
+				title='Front-end'
 				tasks={tasksForTodolist}
 				removeTask={removeTask}
 				changeIsDone={changeIsDone}

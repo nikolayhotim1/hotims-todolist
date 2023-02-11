@@ -18,23 +18,22 @@ type Props = {
 export function Todolist({ title, tasks, removeTask, changeIsDone, changeFilter }: Props) {
 	return (
 		<div>
-			<h3>{title}</h3>
+			<h1>Todolist</h1>
+			<h2>{title}</h2>
 			<div>
-				<input />
-				<button>+</button>
+				<input /> <button>+</button>
 			</div>
 			<ul>
 				{tasks.map(t => (
 					<li key={t.id}>
 						<input type='checkbox' checked={t.isDone} onChange={() => changeIsDone(t.id)} />
-						<span>{t.title}</span>
-						<button onClick={() => removeTask(t.id)}>X</button>
+						<span>{t.title}</span> <button onClick={() => removeTask(t.id)}>x</button>
 					</li>
 				))}
 			</ul>
 			<div>
-				<button onClick={() => changeFilter('all')}>All</button>
-				<button onClick={() => changeFilter('active')}>Active</button>
+				<button onClick={() => changeFilter('all')}>All</button>{' '}
+				<button onClick={() => changeFilter('active')}>Active</button>{' '}
 				<button onClick={() => changeFilter('completed')}>Completed</button>
 			</div>
 		</div>
