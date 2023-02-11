@@ -13,10 +13,16 @@ export default function App() {
 		{ id: 5, title: 'Redux Toolkit', isDone: false },
 		{ id: 6, title: 'Socket.IO', isDone: false },
 		{ id: 7, title: 'Apollo GraphQL', isDone: false },
-		{ id: 8, title: 'Ant Design', isDone: true }
+		{ id: 8, title: 'Ant Design', isDone: true },
+		{ id: 9, isDone: true, title: 'Jest & Unit tests' },
+		{ id: 10, isDone: false, title: 'Zustand' }
 	])
 	const [filter, setFilter] = useState<FilterValues>('all')
 	let tasksForTodolist = tasks
+
+	function addTask(title: string) {
+		setTasks([...tasks, { id: tasks.length + 1, title: title, isDone: false }])
+	}
 
 	function changeIsDone(id: number) {
 		setTasks(tasks.map(t => (t.id !== id ? t : { ...t, isDone: !t.isDone })))
@@ -49,6 +55,7 @@ export default function App() {
 				removeTask={removeTask}
 				changeIsDone={changeIsDone}
 				changeFilter={changeFilter}
+				addTask={addTask}
 			/>
 		</div>
 	)
