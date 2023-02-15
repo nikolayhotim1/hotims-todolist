@@ -9,16 +9,17 @@ export type Task = {
 type FilterValues = 'all' | 'active' | 'completed'
 
 type Props = {
-	listId: number
+	id: number
 	title: string
 	tasks: Task[]
 	removeTask: (listId: number, id: number) => void
+	removeList: (listId: number) => void
 	changeIsDone: (listId: number, id: number) => void
 	addTask: (listId: number, title: string) => void
 }
 
-export function Todolist({ listId, title, tasks, removeTask, changeIsDone, addTask }: Props) {
-	const [newTaskTitle, setNewTaskTitle] = useState('')
+export function Todolist({ id, title, tasks, removeTask, removeList, changeIsDone, addTask }: Props) {
+	const [newTask, setNewTask] = useState('')
 	const [filter, setFilter] = useState<FilterValues>('all')
 	let filteredTasks = tasks
 
@@ -38,24 +39,29 @@ export function Todolist({ listId, title, tasks, removeTask, changeIsDone, addTa
 	}
 
 	return (
-		<div>
-			<h2>{title}</h2>
+		<div className='list'>
+			<div className='title'>
+				<h2>{title}</h2>
+				<button className='button' onClick={() => removeList(id)}>
+					Remove
+				</button>
+			</div>
 			<div>
-				<input placeholder='New task' onChange={e => setNewTaskTitle(e.currentTarget.value)} value={newTaskTitle} />{' '}
+				<input placeholder='New task' onChange={e => setNewTask(e.currentTarget.value)} value={newTask} />{' '}
 				<button
 					onClick={() => {
-						setNewTaskTitle('')
-						addTask(listId, newTaskTitle)
+						setNewTask('')
+						addTask(id, newTask)
 					}}
 				>
 					+
 				</button>
 			</div>
-			<ul>
+			<ul className='tasks'>
 				{filteredTasks.map(t => (
 					<li key={t.id}>
-						<input type='checkbox' checked={t.isDone} onChange={() => changeIsDone(listId, t.id)} />
-						<span>{t.title}</span> <button onClick={() => removeTask(listId, t.id)}>x</button>
+						<input type='checkbox' checked={t.isDone} onChange={() => changeIsDone(id, t.id)} />
+						<span>{t.title}</span> <button onClick={() => removeTask(id, t.id)}>x</button>
 					</li>
 				))}
 			</ul>

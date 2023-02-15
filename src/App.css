@@ -1,14 +1,27 @@
 .App {
-	padding: 30px;
+	margin-left: 30px;
+}
+
+.todolist {
 	display: flex;
+	flex-wrap: wrap;
 }
 
-.App > div {
-	margin-right: 50px;
+.list {
+	margin-right: 30px;
 }
 
-ul {
+.title {
+	display: flex;
+	align-items: center;
+}
+
+.button {
+	height: 21.2px;
+	margin-left: 5px;
+}
+
+.tasks {
 	list-style-type: none;
-	margin: 0;
 	padding: 0;
 }

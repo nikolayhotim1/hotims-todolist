@@ -8,22 +8,11 @@ type List = {
 	listTasks: Task[]
 }
 
-const tasksForTodolist = [
+const initialTasks = [
 	{
 		listId: 1,
 		listTitle: 'Front-end',
-		listTasks: [
-			{ id: 1, title: 'HTML & CSS', isDone: true },
-			{ id: 2, title: 'JS & TS', isDone: true },
-			{ id: 3, title: 'React & Redux', isDone: true },
-			{ id: 4, title: 'Next', isDone: true },
-			{ id: 5, title: 'Redux Toolkit', isDone: false },
-			{ id: 6, title: 'Socket.IO', isDone: false },
-			{ id: 7, title: 'Apollo GraphQL', isDone: false },
-			{ id: 8, title: 'Ant Design', isDone: true },
-			{ id: 9, isDone: true, title: 'Jest & Unit tests' },
-			{ id: 10, isDone: false, title: 'Zustand' }
-		]
+		listTasks: []
 	},
 	{
 		listId: 2,
@@ -36,17 +25,22 @@ const tasksForTodolist = [
 		listTasks: []
 	}
 ]
-let nextTaskId = 11
+let nextId = 4
 
 export default function App() {
-	const [tasks, setTasks] = useState<List[]>(tasksForTodolist)
+	const [tasks, setTasks] = useState<List[]>(initialTasks)
+	const [newList, setNewList] = useState('')
 
 	function addTask(listId: number, title: string) {
 		setTasks(
 			tasks.map(l =>
-				l.listId !== listId ? l : { ...l, listTasks: [...l.listTasks, { id: nextTaskId++, title: title, isDone: false }] }
+				l.listId !== listId ? l : { ...l, listTasks: [...l.listTasks, { id: nextId++, title: title, isDone: false }] }
 			)
 		)
+	}
+
+	function addList(listTitle: string) {
+		setTasks([...tasks, { listId: nextId++, listTitle: listTitle, listTasks: [] }])
 	}
 
 	function changeIsDone(listId: number, id: number) {
@@ -63,19 +57,36 @@ export default function App() {
 		setTasks(tasks.map(l => (l.listId !== listId ? l : { ...l, listTasks: l.listTasks.filter(lt => lt.id !== id) })))
 	}
 
+	function removeList(listId: number) {
+		setTasks(tasks.filter(l => l.listId !== listId))
+	}
+
 	return (
 		<div className='App'>
-			{tasks.map(l => (
-				<Todolist
-					key={l.listId}
-					listId={l.listId}
-					title={l.listTitle}
-					tasks={l.listTasks}
-					removeTask={removeTask}
-					changeIsDone={changeIsDone}
-					addTask={addTask}
-				/>
-			))}
+			<h1>Todolist</h1>
+			<input placeholder='New list' onChange={e => setNewList(e.currentTarget.value)} value={newList} />{' '}
+			<button
+				onClick={() => {
+					setNewList('')
+					addList(newList)
+				}}
+			>
+				Add
+			</button>
+			<div className='todolist'>
+				{tasks.map(l => (
+					<Todolist
+						key={l.listId}
+						id={l.listId}
+						title={l.listTitle}
+						tasks={l.listTasks}
+						removeTask={removeTask}
+						removeList={removeList}
+						changeIsDone={changeIsDone}
+						addTask={addTask}
+					/>
+				))}
+			</div>
 		</div>
 	)
 }
