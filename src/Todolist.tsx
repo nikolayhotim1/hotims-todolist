@@ -60,7 +60,12 @@ export function Todolist({ id, title, tasks, removeTask, removeList, changeIsDon
 			<ul className='tasks'>
 				{filteredTasks.map(t => (
 					<li key={t.id}>
-						<input type='checkbox' checked={t.isDone} onChange={() => changeIsDone(id, t.id)} />
+						<input
+							placeholder='Is done?'
+							type='checkbox'
+							checked={t.isDone}
+							onChange={() => changeIsDone(id, t.id)}
+						/>
 						<span>{t.title}</span> <button onClick={() => removeTask(id, t.id)}>x</button>
 					</li>
 				))}

@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import { useImmer } from 'use-immer'
 import './App.css'
+import { initialTasks } from './initialTasks'
 import { Task, Todolist } from './Todolist'
 
 type List = {
@@ -8,57 +10,38 @@ type List = {
 	listTasks: Task[]
 }
 
-const initialTasks = [
-	{
-		listId: 1,
-		listTitle: 'Front-end',
-		listTasks: []
-	},
-	{
-		listId: 2,
-		listTitle: 'Sport',
-		listTasks: []
-	},
-	{
-		listId: 3,
-		listTitle: 'Books',
-		listTasks: []
-	}
-]
-let nextId = 4
+let nextId = 8
 
 export default function App() {
-	const [tasks, setTasks] = useState<List[]>(initialTasks)
+	const [tasks, updateTasks] = useImmer<List[]>(initialTasks)
 	const [newList, setNewList] = useState('')
 
 	function addTask(listId: number, title: string) {
-		setTasks(
-			tasks.map(l =>
-				l.listId !== listId ? l : { ...l, listTasks: [...l.listTasks, { id: nextId++, title: title, isDone: false }] }
-			)
-		)
+		updateTasks(draft => {
+			draft.map(l => (l.listId !== listId ? l : l.listTasks.push({ id: nextId++, title: title, isDone: false })))
+		})
 	}
 
 	function addList(listTitle: string) {
-		setTasks([...tasks, { listId: nextId++, listTitle: listTitle, listTasks: [] }])
+		updateTasks(draft => {
+			draft.push({ listId: nextId++, listTitle: listTitle, listTasks: [] })
+		})
 	}
 
 	function changeIsDone(listId: number, id: number) {
-		setTasks(
-			tasks.map(l =>
-				l.listId !== listId
-					? l
-					: { ...l, listTasks: l.listTasks.map(lt => (lt.id !== id ? lt : { ...lt, isDone: !lt.isDone })) }
-			)
-		)
+		updateTasks(draft => {
+			draft.map(l => (l.listId !== listId ? l : l.listTasks.map(lt => (lt.id !== id ? lt : (lt.isDone = !lt.isDone)))))
+		})
 	}
 
 	function removeTask(listId: number, id: number) {
-		setTasks(tasks.map(l => (l.listId !== listId ? l : { ...l, listTasks: l.listTasks.filter(lt => lt.id !== id) })))
+		updateTasks(draft => {
+			draft.map(l => (l.listId !== listId ? l : (l.listTasks = l.listTasks.filter(lt => lt.id !== id))))
+		})
 	}
 
 	function removeList(listId: number) {
-		setTasks(tasks.filter(l => l.listId !== listId))
+		updateTasks(draft => draft.filter(l => l.listId !== listId))
 	}
 
 	return (
