@@ -14,7 +14,7 @@ export function Task({ id, task, changeIsDone, changeTask, removeTask }: Props) 
 	return (
 		<div className='task'>
 			<input placeholder='Is done?' type='checkbox' checked={task.isDone} onChange={() => changeIsDone(id, task.id)} />
-			<Content contentType={'Task'} id={id} taskId={task.id} title={task.title} changeTask={changeTask} />
+			<Content taskContentType taskListId={id} taskId={task.id} taskTitle={task.title} changeTask={changeTask} />
 			<button onClick={() => removeTask(id, task.id)}>Delete</button>
 		</div>
 	)

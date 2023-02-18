@@ -11,7 +11,7 @@ type Props = {
 export function List({ id, title, changeList, removeList }: Props) {
 	return (
 		<>
-			<Content contentType={'List'} id={id} title={title} changeList={changeList} />
+			<Content listId={id} listTitle={title} changeList={changeList} />
 			<button onClick={() => removeList(id)}>Delete</button>
 		</>
 	)

@@ -1,41 +1,42 @@
 import React, { useState } from 'react'
 
 type TaskProps = {
-	contentType: 'Task'
-	id: number
+	taskContentType: true
+	taskListId: number
 	taskId: number
-	title: string
+	taskTitle: string
 	changeTask: (listId: number, id: number, title: string) => void
 }
 
 type ListProps = {
-	contentType: 'List'
-	id: number
-	title: string
+	listId: number
+	listTitle: string
 	changeList: (listId: number, listTitle: string) => void
 }
 
 export function Content(props: TaskProps | ListProps) {
+	const { taskContentType, taskListId, taskId, taskTitle, changeTask } = props as TaskProps
+	const { listId, listTitle, changeList } = props as ListProps
 	const [isEditing, setIsEditing] = useState(false)
 	let content: JSX.Element
 
 	if (isEditing) {
 		content = (
 			<>
-				{props.contentType === 'Task' ? (
+				{taskContentType ? (
 					<input
-						placeholder={`${props.contentType} title`}
-						value={props.title}
+						placeholder={`Task title`}
+						value={taskTitle}
 						onChange={e => {
-							props.changeTask(props.id, props.taskId, e.target.value)
+							changeTask(taskListId, taskId, e.target.value)
 						}}
 					/>
 				) : (
 					<input
-						placeholder={`${props.contentType} title`}
-						value={props.title}
+						placeholder={`List title`}
+						value={listTitle}
 						onChange={e => {
-							props.changeList(props.id, e.target.value)
+							changeList(listId, e.target.value)
 						}}
 					/>
 				)}
@@ -45,7 +46,7 @@ export function Content(props: TaskProps | ListProps) {
 	} else {
 		content = (
 			<>
-				{props.contentType === 'Task' ? <>{props.title}</> : <h2>{props.title}</h2>}
+				{taskContentType ? <>{taskTitle}</> : <h2>{listTitle}</h2>}
 				<button onClick={() => setIsEditing(true)}>Edit</button>
 			</>
 		)
