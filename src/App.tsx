@@ -58,7 +58,7 @@ export default function App() {
 	return (
 		<>
 			<Header addList={addList} />
-			<div className='todolist'>
+			<div className='lists'>
 				{tasks.map(l => (
 					<Todolist
 						key={l.listId}

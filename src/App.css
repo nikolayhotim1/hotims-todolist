@@ -4,7 +4,7 @@
 	align-items: center;
 }
 
-.todolist {
+.lists {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
@@ -17,14 +17,14 @@
 	margin: 0 30px;
 }
 
-.title {
+.list-title {
 	display: flex;
 	align-items: center;
 	column-gap: 5px;
 	margin: 10px 0;
 }
 
-.tasks {
+.list-tasks {
 	display: flex;
 	flex-direction: column;
 	row-gap: 5px;
@@ -32,9 +32,9 @@
 	padding: 0;
 }
 
-.edit,
-.filter,
-.add {
+.task,
+.tasks-filter,
+.add-form {
 	display: flex;
 	column-gap: 5px;
 }

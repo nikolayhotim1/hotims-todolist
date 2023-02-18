@@ -15,7 +15,7 @@ export function List({ id, title, changeList, removeList }: Props) {
 		? (listContent = (
 				<>
 					<input
-						placeholder='List'
+						placeholder='List title'
 						value={title}
 						onChange={e => {
 							changeList(id, e.target.value)
@@ -34,9 +34,7 @@ export function List({ id, title, changeList, removeList }: Props) {
 	return (
 		<>
 			{listContent}
-			<button className='button' onClick={() => removeList(id)}>
-				Delete
-			</button>
+			<button onClick={() => removeList(id)}>Delete</button>
 		</>
 	)
 }

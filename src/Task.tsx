@@ -15,28 +15,29 @@ export function Task({ id, task, changeIsDone, changeTask, removeTask }: Props) 
 
 	isEditing
 		? (taskContent = (
-				<div className='edit'>
+				<>
 					<input
-						placeholder='Task'
+						placeholder='Task title'
 						value={task.title}
 						onChange={e => {
 							changeTask(id, task.id, e.target.value)
 						}}
 					/>
 					<button onClick={() => setIsEditing(false)}>Save</button>
-				</div>
+				</>
 		  ))
 		: (taskContent = (
-				<div className='edit'>
+				<>
 					{task.title}
 					<button onClick={() => setIsEditing(true)}>Edit</button>
-				</div>
+				</>
 		  ))
 
 	return (
-		<div className='edit'>
+		<div className='task'>
 			<input placeholder='Is done?' type='checkbox' checked={task.isDone} onChange={() => changeIsDone(id, task.id)} />
-			{taskContent} <button onClick={() => removeTask(id, task.id)}>Delete</button>
+			{taskContent}
+			<button onClick={() => removeTask(id, task.id)}>Delete</button>
 		</div>
 	)
 }

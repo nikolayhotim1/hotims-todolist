@@ -10,7 +10,7 @@ export function Header({ addList }: Props) {
 	return (
 		<div className='header'>
 			<h1>Todolist</h1>
-			<div className='add'>
+			<div className='add-form'>
 				<input placeholder='New list' onChange={e => setNewList(e.currentTarget.value)} value={newList} />
 				<button
 					onClick={() => {

@@ -44,10 +44,10 @@ export function Todolist({ id, title, tasks, addTask, changeIsDone, changeTask, 
 
 	return (
 		<div className='list'>
-			<div className='title'>
+			<div className='list-title'>
 				<List id={id} title={title} removeList={removeList} changeList={changeList} />
 			</div>
-			<div className='add'>
+			<div className='add-form'>
 				<input placeholder='New task' onChange={e => setNewTask(e.currentTarget.value)} value={newTask} />
 				<button
 					onClick={() => {
@@ -58,14 +58,14 @@ export function Todolist({ id, title, tasks, addTask, changeIsDone, changeTask, 
 					Add
 				</button>
 			</div>
-			<ul className='tasks'>
+			<ul className='list-tasks'>
 				{filteredTasks.map(t => (
 					<li key={t.id}>
 						<Task id={id} task={t} removeTask={removeTask} changeIsDone={changeIsDone} changeTask={changeTask} />
 					</li>
 				))}
 			</ul>
-			<div className='filter'>
+			<div className='tasks-filter'>
 				<button onClick={() => changeFilter('all')}>All</button>
 				<button onClick={() => changeFilter('active')}>Active</button>
 				<button onClick={() => changeFilter('completed')}>Completed</button>
