@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { List } from './List'
+import { Task } from './Task'
 
-export type Task = {
+export type TaskType = {
 	id: number
 	title: string
 	isDone: boolean
@@ -11,14 +13,16 @@ type FilterValues = 'all' | 'active' | 'completed'
 type Props = {
 	id: number
 	title: string
-	tasks: Task[]
+	tasks: TaskType[]
+	addTask: (listId: number, title: string) => void
+	changeIsDone: (listId: number, id: number) => void
+	changeTask: (listId: number, id: number, title: string) => void
+	changeList: (listId: number, listTitle: string) => void
 	removeTask: (listId: number, id: number) => void
 	removeList: (listId: number) => void
-	changeIsDone: (listId: number, id: number) => void
-	addTask: (listId: number, title: string) => void
 }
 
-export function Todolist({ id, title, tasks, removeTask, removeList, changeIsDone, addTask }: Props) {
+export function Todolist({ id, title, tasks, addTask, changeIsDone, changeTask, changeList, removeTask, removeList }: Props) {
 	const [newTask, setNewTask] = useState('')
 	const [filter, setFilter] = useState<FilterValues>('all')
 	let filteredTasks = tasks
@@ -41,38 +45,29 @@ export function Todolist({ id, title, tasks, removeTask, removeList, changeIsDon
 	return (
 		<div className='list'>
 			<div className='title'>
-				<h2>{title}</h2>
-				<button className='button' onClick={() => removeList(id)}>
-					Remove
-				</button>
+				<List id={id} title={title} removeList={removeList} changeList={changeList} />
 			</div>
-			<div>
-				<input placeholder='New task' onChange={e => setNewTask(e.currentTarget.value)} value={newTask} />{' '}
+			<div className='add'>
+				<input placeholder='New task' onChange={e => setNewTask(e.currentTarget.value)} value={newTask} />
 				<button
 					onClick={() => {
 						setNewTask('')
 						addTask(id, newTask)
 					}}
 				>
-					+
+					Add
 				</button>
 			</div>
 			<ul className='tasks'>
 				{filteredTasks.map(t => (
 					<li key={t.id}>
-						<input
-							placeholder='Is done?'
-							type='checkbox'
-							checked={t.isDone}
-							onChange={() => changeIsDone(id, t.id)}
-						/>
-						<span>{t.title}</span> <button onClick={() => removeTask(id, t.id)}>x</button>
+						<Task id={id} task={t} removeTask={removeTask} changeIsDone={changeIsDone} changeTask={changeTask} />
 					</li>
 				))}
 			</ul>
-			<div>
-				<button onClick={() => changeFilter('all')}>All</button>{' '}
-				<button onClick={() => changeFilter('active')}>Active</button>{' '}
+			<div className='filter'>
+				<button onClick={() => changeFilter('all')}>All</button>
+				<button onClick={() => changeFilter('active')}>Active</button>
 				<button onClick={() => changeFilter('completed')}>Completed</button>
 			</div>
 		</div>

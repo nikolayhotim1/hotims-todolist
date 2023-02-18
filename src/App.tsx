@@ -1,20 +1,19 @@
-import React, { useState } from 'react'
 import { useImmer } from 'use-immer'
 import './App.css'
+import { Header } from './Header'
 import { initialTasks } from './initialTasks'
-import { Task, Todolist } from './Todolist'
+import { TaskType, Todolist } from './Todolist'
 
-type List = {
+type ListType = {
 	listId: number
 	listTitle: string
-	listTasks: Task[]
+	listTasks: TaskType[]
 }
 
 let nextId = 8
 
 export default function App() {
-	const [tasks, updateTasks] = useImmer<List[]>(initialTasks)
-	const [newList, setNewList] = useState('')
+	const [tasks, updateTasks] = useImmer<ListType[]>(initialTasks)
 
 	function addTask(listId: number, title: string) {
 		updateTasks(draft => {
@@ -34,6 +33,18 @@ export default function App() {
 		})
 	}
 
+	function changeTask(listId: number, id: number, title: string) {
+		updateTasks(draft => {
+			draft.map(l => (l.listId !== listId ? l : l.listTasks.map(lt => (lt.id !== id ? lt : (lt.title = title)))))
+		})
+	}
+
+	function changeList(listId: number, listTitle: string) {
+		updateTasks(draft => {
+			draft.map(l => (l.listId !== listId ? l : (l.listTitle = listTitle)))
+		})
+	}
+
 	function removeTask(listId: number, id: number) {
 		updateTasks(draft => {
 			draft.map(l => (l.listId !== listId ? l : (l.listTasks = l.listTasks.filter(lt => lt.id !== id))))
@@ -41,21 +52,12 @@ export default function App() {
 	}
 
 	function removeList(listId: number) {
-		updateTasks(draft => draft.filter(l => l.listId !== listId))
+		updateTasks(tasks.filter(l => l.listId !== listId))
 	}
 
 	return (
-		<div className='App'>
-			<h1>Todolist</h1>
-			<input placeholder='New list' onChange={e => setNewList(e.currentTarget.value)} value={newList} />{' '}
-			<button
-				onClick={() => {
-					setNewList('')
-					addList(newList)
-				}}
-			>
-				Add
-			</button>
+		<>
+			<Header addList={addList} />
 			<div className='todolist'>
 				{tasks.map(l => (
 					<Todolist
@@ -63,13 +65,15 @@ export default function App() {
 						id={l.listId}
 						title={l.listTitle}
 						tasks={l.listTasks}
+						addTask={addTask}
+						changeIsDone={changeIsDone}
+						changeTask={changeTask}
+						changeList={changeList}
 						removeTask={removeTask}
 						removeList={removeList}
-						changeIsDone={changeIsDone}
-						addTask={addTask}
 					/>
 				))}
 			</div>
-		</div>
+		</>
 	)
 }
