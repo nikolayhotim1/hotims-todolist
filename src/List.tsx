@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import React from 'react'
+import { Content } from './Content'
 
 type Props = {
 	id: number
@@ -8,32 +9,9 @@ type Props = {
 }
 
 export function List({ id, title, changeList, removeList }: Props) {
-	const [isEditing, setIsEditing] = useState(false)
-	let listContent
-
-	isEditing
-		? (listContent = (
-				<>
-					<input
-						placeholder='List title'
-						value={title}
-						onChange={e => {
-							changeList(id, e.target.value)
-						}}
-					/>
-					<button onClick={() => setIsEditing(false)}>Save</button>
-				</>
-		  ))
-		: (listContent = (
-				<>
-					<h2>{title}</h2>
-					<button onClick={() => setIsEditing(true)}>Edit</button>
-				</>
-		  ))
-
 	return (
 		<>
-			{listContent}
+			<Content contentType={'List'} id={id} title={title} changeList={changeList} />
 			<button onClick={() => removeList(id)}>Delete</button>
 		</>
 	)

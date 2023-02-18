@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import React from 'react'
+import { Content } from './Content'
 import { TaskType } from './Todolist'
 
 type Props = {
@@ -10,33 +11,10 @@ type Props = {
 }
 
 export function Task({ id, task, changeIsDone, changeTask, removeTask }: Props) {
-	const [isEditing, setIsEditing] = useState(false)
-	let taskContent
-
-	isEditing
-		? (taskContent = (
-				<>
-					<input
-						placeholder='Task title'
-						value={task.title}
-						onChange={e => {
-							changeTask(id, task.id, e.target.value)
-						}}
-					/>
-					<button onClick={() => setIsEditing(false)}>Save</button>
-				</>
-		  ))
-		: (taskContent = (
-				<>
-					{task.title}
-					<button onClick={() => setIsEditing(true)}>Edit</button>
-				</>
-		  ))
-
 	return (
 		<div className='task'>
 			<input placeholder='Is done?' type='checkbox' checked={task.isDone} onChange={() => changeIsDone(id, task.id)} />
-			{taskContent}
+			<Content contentType={'Task'} id={id} taskId={task.id} title={task.title} changeTask={changeTask} />
 			<button onClick={() => removeTask(id, task.id)}>Delete</button>
 		</div>
 	)
