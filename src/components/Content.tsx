@@ -25,7 +25,7 @@ export function Content(props: TaskProps | ListProps) {
 			<>
 				{taskContentType ? (
 					<input
-						placeholder={`Task title`}
+						placeholder='Task title'
 						value={taskTitle}
 						onChange={e => {
 							changeTask(taskListId, taskId, e.target.value)
@@ -33,7 +33,7 @@ export function Content(props: TaskProps | ListProps) {
 					/>
 				) : (
 					<input
-						placeholder={`List title`}
+						placeholder='List title'
 						value={listTitle}
 						onChange={e => {
 							changeList(listId, e.target.value)

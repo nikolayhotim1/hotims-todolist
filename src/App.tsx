@@ -1,8 +1,8 @@
 import { useImmer } from 'use-immer'
-import './App.css'
-import { Header } from './Header'
-import { initialTasks } from './initialTasks'
-import { TaskType, Todolist } from './Todolist'
+import './styles/App.css'
+import { Header } from './components/Header'
+import { TaskType, Todolist } from './components/Todolist'
+import { initialTasks } from './data/initialTasks'
 
 type ListType = {
 	listId: number
