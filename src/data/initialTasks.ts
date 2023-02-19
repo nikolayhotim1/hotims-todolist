@@ -1,36 +1,38 @@
+import { v1 } from 'uuid'
+
 export const initialTasks = [
 	{
-		listId: 1,
+		listId: v1(),
 		listTitle: 'Family',
 		listTasks: []
 	},
 	{
-		listId: 2,
+		listId: v1(),
 		listTitle: 'English',
 		listTasks: []
 	},
 	{
-		listId: 3,
+		listId: v1(),
 		listTitle: 'Front-end',
 		listTasks: []
 	},
 	{
-		listId: 4,
+		listId: v1(),
 		listTitle: 'Sport',
 		listTasks: []
 	},
 	{
-		listId: 5,
+		listId: v1(),
 		listTitle: 'Books',
 		listTasks: []
 	},
 	{
-		listId: 6,
+		listId: v1(),
 		listTitle: 'Trips',
 		listTasks: []
 	},
 	{
-		listId: 7,
+		listId: v1(),
 		listTitle: 'Movies',
 		listTasks: []
 	}

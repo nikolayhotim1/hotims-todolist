@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 
 type TaskProps = {
 	taskContentType: true
-	taskListId: number
-	taskId: number
+	taskListId: string
+	taskId: string
 	taskTitle: string
-	changeTask: (listId: number, id: number, title: string) => void
+	changeTask: (listId: string, id: string, title: string) => void
 }
 
 type ListProps = {
-	listId: number
+	listId: string
 	listTitle: string
-	changeList: (listId: number, listTitle: string) => void
+	changeList: (listId: string, listTitle: string) => void
 }
 
 export function Content(props: TaskProps | ListProps) {
@@ -20,36 +20,45 @@ export function Content(props: TaskProps | ListProps) {
 	const [isEditing, setIsEditing] = useState(false)
 	let content: JSX.Element
 
+	function handleChangeTask(e: ChangeEvent<HTMLInputElement>) {
+		changeTask(taskListId, taskId, e.target.value)
+	}
+
+	function handleChangeList(e: ChangeEvent<HTMLInputElement>) {
+		changeList(listId, e.target.value)
+	}
+
+	function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+		e.key === 'Enter' && setIsEditing(false)
+	}
+
+	function handleSaveClick() {
+		setIsEditing(false)
+	}
+
+	function handleEditClick() {
+		setIsEditing(true)
+	}
+
 	if (isEditing) {
 		content = (
 			<>
 				{taskContentType ? (
-					<input
-						placeholder='Task title'
-						value={taskTitle}
-						onChange={e => {
-							changeTask(taskListId, taskId, e.target.value)
-						}}
-					/>
+					<input placeholder='Task title' value={taskTitle} onChange={handleChangeTask} onKeyDown={handleKeyDown} />
 				) : (
-					<input
-						placeholder='List title'
-						value={listTitle}
-						onChange={e => {
-							changeList(listId, e.target.value)
-						}}
-					/>
+					<input placeholder='List title' value={listTitle} onChange={handleChangeList} onKeyDown={handleKeyDown} />
 				)}
-				<button onClick={() => setIsEditing(false)}>Save</button>
+				<button onClick={handleSaveClick}>Save</button>
 			</>
 		)
 	} else {
 		content = (
 			<>
 				{taskContentType ? <>{taskTitle}</> : <h2>{listTitle}</h2>}
-				<button onClick={() => setIsEditing(true)}>Edit</button>
+				<button onClick={handleEditClick}>Edit</button>
 			</>
 		)
 	}
+
 	return <>{content}</>
 }

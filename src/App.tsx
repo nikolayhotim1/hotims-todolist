@@ -1,57 +1,51 @@
 import { useImmer } from 'use-immer'
 import './styles/App.css'
 import { Header } from './components/Header'
-import { TaskType, Todolist } from './components/Todolist'
+import { Todolist } from './components/Todolist'
 import { initialTasks } from './data/initialTasks'
-
-type ListType = {
-	listId: number
-	listTitle: string
-	listTasks: TaskType[]
-}
-
-let nextId = 8
+import { v1 } from 'uuid'
+import { ListType } from './types/types'
 
 export default function App() {
 	const [tasks, updateTasks] = useImmer<ListType[]>(initialTasks)
 
-	function addTask(listId: number, title: string) {
+	function addTask(listId: string, title: string) {
 		updateTasks(draft => {
-			draft.map(l => (l.listId !== listId ? l : l.listTasks.push({ id: nextId++, title: title, isDone: false })))
+			draft.map(l => (l.listId !== listId ? l : l.listTasks.push({ id: v1(), title: title, isDone: false })))
 		})
 	}
 
 	function addList(listTitle: string) {
 		updateTasks(draft => {
-			draft.push({ listId: nextId++, listTitle: listTitle, listTasks: [] })
+			draft.push({ listId: v1(), listTitle: listTitle, listTasks: [] })
 		})
 	}
 
-	function changeIsDone(listId: number, id: number) {
+	function changeIsDone(listId: string, id: string) {
 		updateTasks(draft => {
 			draft.map(l => (l.listId !== listId ? l : l.listTasks.map(lt => (lt.id !== id ? lt : (lt.isDone = !lt.isDone)))))
 		})
 	}
 
-	function changeTask(listId: number, id: number, title: string) {
+	function changeTask(listId: string, id: string, title: string) {
 		updateTasks(draft => {
 			draft.map(l => (l.listId !== listId ? l : l.listTasks.map(lt => (lt.id !== id ? lt : (lt.title = title)))))
 		})
 	}
 
-	function changeList(listId: number, listTitle: string) {
+	function changeList(listId: string, listTitle: string) {
 		updateTasks(draft => {
 			draft.map(l => (l.listId !== listId ? l : (l.listTitle = listTitle)))
 		})
 	}
 
-	function removeTask(listId: number, id: number) {
+	function removeTask(listId: string, id: string) {
 		updateTasks(draft => {
 			draft.map(l => (l.listId !== listId ? l : (l.listTasks = l.listTasks.filter(lt => lt.id !== id))))
 		})
 	}
 
-	function removeList(listId: number) {
+	function removeList(listId: string) {
 		updateTasks(tasks.filter(l => l.listId !== listId))
 	}
 
