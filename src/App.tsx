@@ -1,7 +1,7 @@
 import { useImmer } from 'use-immer'
 import './styles/App.css'
 import { Header } from './components/Header'
-import { Todolist } from './components/Todolist'
+import { List } from './components/List'
 import { initialTasks } from './data/initialTasks'
 import { v1 } from 'uuid'
 import { ListType } from './types/types'
@@ -50,11 +50,11 @@ export default function App() {
 	}
 
 	return (
-		<>
+		<div className='app'>
 			<Header addList={addList} />
 			<div className='lists'>
 				{tasks.map(l => (
-					<Todolist
+					<List
 						key={l.listId}
 						id={l.listId}
 						title={l.listTitle}
@@ -68,6 +68,6 @@ export default function App() {
 					/>
 				))}
 			</div>
-		</>
+		</div>
 	)
 }
