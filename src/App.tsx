@@ -1,3 +1,4 @@
+import React from 'react'
 import { useImmer } from 'use-immer'
 import './styles/App.css'
 import { Header } from './components/Header'

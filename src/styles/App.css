@@ -1,14 +1,8 @@
-.app {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
+.app,
 .header {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-bottom: 10px;
 }
 
 .lists {
@@ -22,6 +16,7 @@
 	flex-direction: column;
 	align-items: center;
 	margin: 10px 30px;
+	width: 289px;
 }
 
 .list-header {
@@ -43,5 +38,6 @@
 .tasks-filter,
 .add-form {
 	display: flex;
+	align-items: center;
 	column-gap: 5px;
 }

@@ -46,7 +46,9 @@ export function Content(props: TaskProps | ListProps) {
 				{taskContentType ? (
 					<input placeholder='Task title' value={taskTitle} onChange={handleChangeTask} onKeyDown={handleKeyDown} />
 				) : (
-					<input placeholder='List title' value={listTitle} onChange={handleChangeList} onKeyDown={handleKeyDown} />
+					<h2>
+						<input placeholder='List title' value={listTitle} onChange={handleChangeList} onKeyDown={handleKeyDown} />
+					</h2>
 				)}
 				<button onClick={handleSaveClick}>Save</button>
 			</>
