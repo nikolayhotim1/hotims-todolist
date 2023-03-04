@@ -1,21 +1,18 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
+import { HeaderProps } from '../types/types'
 
-type Props = {
-	addList: (listTitle: string) => void
-}
-
-export function Header({ addList }: Props) {
+export function Header({ addList }: HeaderProps) {
 	const [newList, setNewList] = useState('')
 
-	function handleSetNewList(e: ChangeEvent<HTMLInputElement>) {
+	function handleNewListChange(e: ChangeEvent<HTMLInputElement>) {
 		setNewList(e.currentTarget.value)
 	}
 
-	function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-		e.key === 'Enter' && handleAddList()
+	function handleEnterKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+		e.key === 'Enter' && handleAddListClick()
 	}
 
-	function handleAddList() {
+	function handleAddListClick() {
 		setNewList('')
 		addList(newList)
 	}
@@ -24,8 +21,8 @@ export function Header({ addList }: Props) {
 		<div className='header'>
 			<h1>Todolist</h1>
 			<div className='add-form'>
-				<input placeholder='New list' onChange={handleSetNewList} value={newList} onKeyDown={handleKeyDown} />
-				<button onClick={handleAddList}>Add</button>
+				<input placeholder='New list' onChange={handleNewListChange} value={newList} onKeyDown={handleEnterKeyDown} />
+				<button onClick={handleAddListClick}>Add</button>
 			</div>
 		</div>
 	)

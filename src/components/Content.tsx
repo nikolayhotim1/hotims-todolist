@@ -1,34 +1,21 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
+import { ListContentProps, TaskContentProps } from '../types/types'
 
-type TaskProps = {
-	taskContentType: true
-	taskListId: string
-	taskId: string
-	taskTitle: string
-	changeTask: (listId: string, id: string, title: string) => void
-}
-
-type ListProps = {
-	listId: string
-	listTitle: string
-	changeList: (listId: string, listTitle: string) => void
-}
-
-export function Content(props: TaskProps | ListProps) {
-	const { taskContentType, taskListId, taskId, taskTitle, changeTask } = props as TaskProps
-	const { listId, listTitle, changeList } = props as ListProps
+export function Content(props: TaskContentProps | ListContentProps) {
+	const { taskContentType, taskListId, taskId, taskTitle, changeTask } = props as TaskContentProps
+	const { listId, listTitle, changeList } = props as ListContentProps
 	const [isEditing, setIsEditing] = useState(false)
 	let content: JSX.Element
 
-	function handleChangeTask(e: ChangeEvent<HTMLInputElement>) {
+	function handleTaskChange(e: ChangeEvent<HTMLInputElement>) {
 		changeTask(taskListId, taskId, e.target.value)
 	}
 
-	function handleChangeList(e: ChangeEvent<HTMLInputElement>) {
+	function handleListChange(e: ChangeEvent<HTMLInputElement>) {
 		changeList(listId, e.target.value)
 	}
 
-	function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+	function handleEnterKeyDown(e: KeyboardEvent<HTMLInputElement>) {
 		e.key === 'Enter' && setIsEditing(false)
 	}
 
@@ -44,10 +31,20 @@ export function Content(props: TaskProps | ListProps) {
 		content = (
 			<>
 				{taskContentType ? (
-					<input placeholder='Task title' value={taskTitle} onChange={handleChangeTask} onKeyDown={handleKeyDown} />
+					<input
+						placeholder='Task title'
+						value={taskTitle}
+						onChange={handleTaskChange}
+						onKeyDown={handleEnterKeyDown}
+					/>
 				) : (
 					<h2>
-						<input placeholder='List title' value={listTitle} onChange={handleChangeList} onKeyDown={handleKeyDown} />
+						<input
+							placeholder='List title'
+							value={listTitle}
+							onChange={handleListChange}
+							onKeyDown={handleEnterKeyDown}
+						/>
 					</h2>
 				)}
 				<button onClick={handleSaveClick}>Save</button>

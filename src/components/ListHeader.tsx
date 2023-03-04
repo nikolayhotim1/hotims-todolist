@@ -1,22 +1,16 @@
 import React from 'react'
+import { ListHeaderProps } from '../types/types'
 import { Content } from './Content'
 
-type Props = {
-	id: string
-	title: string
-	changeList: (listId: string, listTitle: string) => void
-	removeList: (listId: string) => void
-}
-
-export function ListHeader({ id, title, changeList, removeList }: Props) {
-	function handleRemoveList() {
+export function ListHeader({ id, title, changeList, removeList }: ListHeaderProps) {
+	function handleRemoveListClick() {
 		removeList(id)
 	}
 
 	return (
 		<>
 			<Content listId={id} listTitle={title} changeList={changeList} />
-			<button onClick={handleRemoveList}>Delete</button>
+			<button onClick={handleRemoveListClick}>Delete</button>
 		</>
 	)
 }

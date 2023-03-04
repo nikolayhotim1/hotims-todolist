@@ -1,47 +1,35 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
-import { FilterValues, TaskType } from '../types/types'
+import { FilterValues, ListProps } from '../types/types'
 import { ListHeader } from './ListHeader'
 import { Task } from './Task'
 
-type Props = {
-	id: string
-	title: string
-	tasks: TaskType[]
-	addTask: (listId: string, title: string) => void
-	changeIsDone: (listId: string, id: string) => void
-	changeTask: (listId: string, id: string, title: string) => void
-	changeList: (listId: string, listTitle: string) => void
-	removeTask: (listId: string, id: string) => void
-	removeList: (listId: string) => void
-}
-
-export function List({ id, title, tasks, addTask, changeIsDone, changeTask, changeList, removeTask, removeList }: Props) {
+export function List({ id, title, tasks, addTask, changeIsDone, changeTask, changeList, removeTask, removeList }: ListProps) {
 	const [newTask, setNewTask] = useState('')
 	const [filter, setFilter] = useState<FilterValues>('all')
 	let filteredTasks = tasks
 
-	function handleSetNewTask(e: ChangeEvent<HTMLInputElement>) {
+	function handleNewTaskChange(e: ChangeEvent<HTMLInputElement>) {
 		setNewTask(e.currentTarget.value)
 	}
 
-	function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-		e.key === 'Enter' && handleAddTask()
+	function handleEnterKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+		e.key === 'Enter' && handleAddTaskClick()
 	}
 
-	function handleAddTask() {
+	function handleAddTaskClick() {
 		setNewTask('')
 		addTask(id, newTask)
 	}
 
-	function setAllFilter() {
+	function handleAllFilterClick() {
 		setFilter('all')
 	}
 
-	function setActiveFilter() {
+	function handleActiveFilterClick() {
 		setFilter('active')
 	}
 
-	function setCompletedFilter() {
+	function handleCompletedFilterClick() {
 		setFilter('completed')
 	}
 
@@ -62,8 +50,8 @@ export function List({ id, title, tasks, addTask, changeIsDone, changeTask, chan
 				<ListHeader id={id} title={title} removeList={removeList} changeList={changeList} />
 			</div>
 			<div className='add-form'>
-				<input placeholder='New task' onChange={handleSetNewTask} value={newTask} onKeyDown={handleKeyDown} />
-				<button onClick={handleAddTask}>Add</button>
+				<input placeholder='New task' onChange={handleNewTaskChange} value={newTask} onKeyDown={handleEnterKeyDown} />
+				<button onClick={handleAddTaskClick}>Add</button>
 			</div>
 			<ul className='list-tasks'>
 				{filteredTasks.map(t => (
@@ -73,9 +61,9 @@ export function List({ id, title, tasks, addTask, changeIsDone, changeTask, chan
 				))}
 			</ul>
 			<div className='tasks-filter'>
-				<button onClick={setAllFilter}>All</button>
-				<button onClick={setActiveFilter}>Active</button>
-				<button onClick={setCompletedFilter}>Completed</button>
+				<button onClick={handleAllFilterClick}>All</button>
+				<button onClick={handleActiveFilterClick}>Active</button>
+				<button onClick={handleCompletedFilterClick}>Completed</button>
 			</div>
 		</div>
 	)
