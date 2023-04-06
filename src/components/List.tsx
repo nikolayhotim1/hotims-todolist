@@ -3,13 +3,26 @@ import { FilterValues, ListProps } from '../types/types'
 import { ListHeader } from './ListHeader'
 import { Task } from './Task'
 
-export function List({ id, title, tasks, addTask, changeIsDone, changeTask, changeList, removeTask, removeList }: ListProps) {
+export function List({
+	id,
+	title,
+	tasks,
+	addTask,
+	changeIsDone,
+	changeTask,
+	changeList,
+	removeTask,
+	removeList
+}: ListProps) {
 	const [newTask, setNewTask] = useState('')
 	const [filter, setFilter] = useState<FilterValues>('all')
+	const [error, setError] = useState<string | null>(null)
+
 	let filteredTasks = tasks
 
 	function handleNewTaskChange(e: ChangeEvent<HTMLInputElement>) {
 		setNewTask(e.currentTarget.value)
+		setError(null)
 	}
 
 	function handleEnterKeyDown(e: KeyboardEvent<HTMLInputElement>) {
@@ -17,8 +30,12 @@ export function List({ id, title, tasks, addTask, changeIsDone, changeTask, chan
 	}
 
 	function handleAddTaskClick() {
-		setNewTask('')
-		addTask(id, newTask)
+		if (newTask.trim() !== '') {
+			addTask(id, newTask)
+			setNewTask('')
+		} else {
+			setError('Title is required')
+		}
 	}
 
 	function handleAllFilterClick() {
@@ -50,20 +67,48 @@ export function List({ id, title, tasks, addTask, changeIsDone, changeTask, chan
 				<ListHeader id={id} title={title} removeList={removeList} changeList={changeList} />
 			</div>
 			<div className='add-form'>
-				<input placeholder='New task' onChange={handleNewTaskChange} value={newTask} onKeyDown={handleEnterKeyDown} />
+				<input
+					className={error ? 'error' : ''}
+					placeholder='New task'
+					onChange={handleNewTaskChange}
+					value={newTask}
+					onKeyDown={handleEnterKeyDown}
+				/>
 				<button onClick={handleAddTaskClick}>Add</button>
 			</div>
+			{error && <div className='error-message'>{error}</div>}
 			<ul className='list-tasks'>
 				{filteredTasks.map(t => (
-					<li key={t.id}>
-						<Task id={id} task={t} removeTask={removeTask} changeIsDone={changeIsDone} changeTask={changeTask} />
+					<li key={t.id} className={t.isDone ? 'is-done' : ''}>
+						<Task
+							id={id}
+							task={t}
+							removeTask={removeTask}
+							changeIsDone={changeIsDone}
+							changeTask={changeTask}
+						/>
 					</li>
 				))}
 			</ul>
 			<div className='tasks-filter'>
-				<button onClick={handleAllFilterClick}>All</button>
-				<button onClick={handleActiveFilterClick}>Active</button>
-				<button onClick={handleCompletedFilterClick}>Completed</button>
+				<button
+					className={filter === 'all' ? 'active-filter' : ''}
+					onClick={handleAllFilterClick}
+				>
+					All
+				</button>
+				<button
+					className={filter === 'active' ? 'active-filter' : ''}
+					onClick={handleActiveFilterClick}
+				>
+					Active
+				</button>
+				<button
+					className={filter === 'completed' ? 'active-filter' : ''}
+					onClick={handleCompletedFilterClick}
+				>
+					Completed
+				</button>
 			</div>
 		</div>
 	)

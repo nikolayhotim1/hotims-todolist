@@ -2,17 +2,21 @@ import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { ListContentProps, TaskContentProps } from '../types/types'
 
 export function Content(props: TaskContentProps | ListContentProps) {
-	const { taskContentType, taskListId, taskId, taskTitle, changeTask } = props as TaskContentProps
-	const { listId, listTitle, changeList } = props as ListContentProps
+	const { taskContentType, taskListId, taskId, taskTitle, taskError, setTaskError, changeTask } =
+		props as TaskContentProps
+	const { listId, listTitle, listError, setListError, changeList } = props as ListContentProps
 	const [isEditing, setIsEditing] = useState(false)
+
 	let content: JSX.Element
 
 	function handleTaskChange(e: ChangeEvent<HTMLInputElement>) {
 		changeTask(taskListId, taskId, e.target.value)
+		setTaskError(null)
 	}
 
 	function handleListChange(e: ChangeEvent<HTMLInputElement>) {
 		changeList(listId, e.target.value)
+		setListError(null)
 	}
 
 	function handleEnterKeyDown(e: KeyboardEvent<HTMLInputElement>) {
@@ -20,7 +24,11 @@ export function Content(props: TaskContentProps | ListContentProps) {
 	}
 
 	function handleSaveClick() {
-		setIsEditing(false)
+		if (taskContentType) {
+			taskTitle.trim() !== '' ? setIsEditing(false) : setTaskError('Title is required')
+		} else {
+			listTitle.trim() !== '' ? setIsEditing(false) : setListError('Title is required')
+		}
 	}
 
 	function handleEditClick() {
@@ -32,6 +40,7 @@ export function Content(props: TaskContentProps | ListContentProps) {
 			<>
 				{taskContentType ? (
 					<input
+						className={taskError ? 'error' : ''}
 						placeholder='Task title'
 						value={taskTitle}
 						onChange={handleTaskChange}
@@ -40,6 +49,7 @@ export function Content(props: TaskContentProps | ListContentProps) {
 				) : (
 					<h2>
 						<input
+							className={listError ? 'error' : ''}
 							placeholder='List title'
 							value={listTitle}
 							onChange={handleListChange}

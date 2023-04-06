@@ -1,16 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ListHeaderProps } from '../types/types'
 import { Content } from './Content'
 
 export function ListHeader({ id, title, changeList, removeList }: ListHeaderProps) {
+	const [error, setError] = useState<string | null>(null)
+
 	function handleRemoveListClick() {
 		removeList(id)
 	}
 
 	return (
 		<>
-			<Content listId={id} listTitle={title} changeList={changeList} />
+			<Content
+				listId={id}
+				listTitle={title}
+				listError={error}
+				setListError={setError}
+				changeList={changeList}
+			/>
 			<button onClick={handleRemoveListClick}>Delete</button>
+			{error && <div className='error-message'>{error}</div>}
 		</>
 	)
 }
