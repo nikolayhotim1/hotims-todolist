@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useState } from 'react'
-import { TaskProps } from '../types/types'
+import { ErrorMessage, TaskProps } from '../types/types'
 import { Content } from './Content'
 
 export function Task({ id, task, changeIsDone, changeTask, removeTask }: TaskProps) {
-	const [error, setError] = useState<string | null>(null)
+	const [error, setError] = useState<ErrorMessage | null>(null)
 
 	function handleIsDoneChange(e: ChangeEvent<HTMLInputElement>) {
 		changeIsDone(id, task.id, e.currentTarget.checked)
@@ -16,12 +16,7 @@ export function Task({ id, task, changeIsDone, changeTask, removeTask }: TaskPro
 	return (
 		<>
 			<div className='task'>
-				<input
-					placeholder='Is done?'
-					type='checkbox'
-					checked={task.isDone}
-					onChange={handleIsDoneChange}
-				/>
+				<input placeholder='Is done?' type='checkbox' checked={task.isDone} onChange={handleIsDoneChange} />
 				<Content
 					taskContentType
 					taskListId={id}

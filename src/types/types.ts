@@ -12,8 +12,10 @@ export type ListType = {
 
 export type FilterValues = 'all' | 'active' | 'completed'
 
+export type ErrorMessage = 'Title is required'
+
 export type HeaderProps = {
-	setError: (value: string | null) => void
+	setError: (value: ErrorMessage | null) => void
 	addList: (listTitle: string) => void
 }
 
@@ -50,7 +52,7 @@ export type TaskContentProps = {
 	taskId: string
 	taskTitle: string
 	taskError: string | null
-	setTaskError: (value: string | null) => void
+	setTaskError: (value: ErrorMessage | null) => void
 	changeTask: (listId: string, id: string, title: string) => void
 }
 
@@ -58,6 +60,6 @@ export type ListContentProps = {
 	listId: string
 	listTitle: string
 	listError: string | null
-	setListError: (value: string | null) => void
+	setListError: (value: ErrorMessage | null) => void
 	changeList: (listId: string, listTitle: string) => void
 }

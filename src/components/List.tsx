@@ -1,5 +1,6 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
-import { FilterValues, ListProps } from '../types/types'
+import { ErrorMessage, FilterValues, ListProps } from '../types/types'
+import inputValidator from '../utils/inputValidator'
 import { ListHeader } from './ListHeader'
 import { Task } from './Task'
 
@@ -16,7 +17,7 @@ export function List({
 }: ListProps) {
 	const [newTask, setNewTask] = useState('')
 	const [filter, setFilter] = useState<FilterValues>('all')
-	const [error, setError] = useState<string | null>(null)
+	const [error, setError] = useState<ErrorMessage | null>(null)
 
 	let filteredTasks = tasks
 
@@ -30,11 +31,9 @@ export function List({
 	}
 
 	function handleAddTaskClick() {
-		if (newTask.trim() !== '') {
+		if (inputValidator(newTask, setError)) {
 			addTask(id, newTask)
 			setNewTask('')
-		} else {
-			setError('Title is required')
 		}
 	}
 
@@ -64,7 +63,7 @@ export function List({
 	return (
 		<div className='list'>
 			<div className='list-header'>
-				<ListHeader id={id} title={title} removeList={removeList} changeList={changeList} />
+				<ListHeader id={id} title={title} changeList={changeList} removeList={removeList} />
 			</div>
 			<div className='add-form'>
 				<input
@@ -80,33 +79,18 @@ export function List({
 			<ul className='list-tasks'>
 				{filteredTasks.map(t => (
 					<li key={t.id} className={t.isDone ? 'is-done' : ''}>
-						<Task
-							id={id}
-							task={t}
-							removeTask={removeTask}
-							changeIsDone={changeIsDone}
-							changeTask={changeTask}
-						/>
+						<Task id={id} task={t} changeIsDone={changeIsDone} changeTask={changeTask} removeTask={removeTask} />
 					</li>
 				))}
 			</ul>
 			<div className='tasks-filter'>
-				<button
-					className={filter === 'all' ? 'active-filter' : ''}
-					onClick={handleAllFilterClick}
-				>
+				<button className={filter === 'all' ? 'active-filter' : ''} onClick={handleAllFilterClick}>
 					All
 				</button>
-				<button
-					className={filter === 'active' ? 'active-filter' : ''}
-					onClick={handleActiveFilterClick}
-				>
+				<button className={filter === 'active' ? 'active-filter' : ''} onClick={handleActiveFilterClick}>
 					Active
 				</button>
-				<button
-					className={filter === 'completed' ? 'active-filter' : ''}
-					onClick={handleCompletedFilterClick}
-				>
+				<button className={filter === 'completed' ? 'active-filter' : ''} onClick={handleCompletedFilterClick}>
 					Completed
 				</button>
 			</div>

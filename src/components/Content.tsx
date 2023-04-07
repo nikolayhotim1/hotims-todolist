@@ -1,9 +1,9 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { ListContentProps, TaskContentProps } from '../types/types'
+import inputValidator from '../utils/inputValidator'
 
 export function Content(props: TaskContentProps | ListContentProps) {
-	const { taskContentType, taskListId, taskId, taskTitle, taskError, setTaskError, changeTask } =
-		props as TaskContentProps
+	const { taskContentType, taskListId, taskId, taskTitle, taskError, setTaskError, changeTask } = props as TaskContentProps
 	const { listId, listTitle, listError, setListError, changeList } = props as ListContentProps
 	const [isEditing, setIsEditing] = useState(false)
 
@@ -25,9 +25,9 @@ export function Content(props: TaskContentProps | ListContentProps) {
 
 	function handleSaveClick() {
 		if (taskContentType) {
-			taskTitle.trim() !== '' ? setIsEditing(false) : setTaskError('Title is required')
+			inputValidator(taskTitle, setTaskError) && setIsEditing(false)
 		} else {
-			listTitle.trim() !== '' ? setIsEditing(false) : setListError('Title is required')
+			inputValidator(listTitle, setListError) && setIsEditing(false)
 		}
 	}
 

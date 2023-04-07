@@ -5,19 +5,15 @@ import { Header } from './components/Header'
 import { List } from './components/List'
 import { initialTasks } from './data/initialTasks'
 import { v1 } from 'uuid'
-import { ListType } from './types/types'
+import { ErrorMessage, ListType } from './types/types'
 
 export default function App() {
 	const [tasks, updateTasks] = useImmer<ListType[]>(initialTasks)
-	const [error, setError] = useState<string | null>(null)
+	const [error, setError] = useState<ErrorMessage | null>(null)
 
 	function addTask(listId: string, title: string) {
 		updateTasks(draft => {
-			draft.map(l =>
-				l.listId !== listId
-					? l
-					: l.listTasks.push({ id: v1(), title: title.trim(), isDone: false })
-			)
+			draft.map(l => (l.listId !== listId ? l : l.listTasks.push({ id: v1(), title: title.trim(), isDone: false })))
 		})
 	}
 
@@ -29,21 +25,13 @@ export default function App() {
 
 	function changeIsDone(listId: string, id: string, isDone: boolean) {
 		updateTasks(draft => {
-			draft.map(l =>
-				l.listId !== listId
-					? l
-					: l.listTasks.map(lt => (lt.id !== id ? lt : (lt.isDone = isDone)))
-			)
+			draft.map(l => (l.listId !== listId ? l : l.listTasks.map(lt => (lt.id !== id ? lt : (lt.isDone = isDone)))))
 		})
 	}
 
 	function changeTask(listId: string, id: string, title: string) {
 		updateTasks(draft => {
-			draft.map(l =>
-				l.listId !== listId
-					? l
-					: l.listTasks.map(lt => (lt.id !== id ? lt : (lt.title = title)))
-			)
+			draft.map(l => (l.listId !== listId ? l : l.listTasks.map(lt => (lt.id !== id ? lt : (lt.title = title)))))
 		})
 	}
 
@@ -55,9 +43,7 @@ export default function App() {
 
 	function removeTask(listId: string, id: string) {
 		updateTasks(draft => {
-			draft.map(l =>
-				l.listId !== listId ? l : (l.listTasks = l.listTasks.filter(lt => lt.id !== id))
-			)
+			draft.map(l => (l.listId !== listId ? l : (l.listTasks = l.listTasks.filter(lt => lt.id !== id))))
 		})
 	}
 

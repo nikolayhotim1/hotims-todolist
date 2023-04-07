@@ -1,5 +1,6 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { HeaderProps } from '../types/types'
+import inputValidator from '../utils/inputValidator'
 
 export function Header({ setError, addList }: HeaderProps) {
 	const [newList, setNewList] = useState('')
@@ -14,11 +15,9 @@ export function Header({ setError, addList }: HeaderProps) {
 	}
 
 	function handleAddListClick() {
-		if (newList.trim() !== '') {
+		if (inputValidator(newList, setError)) {
 			addList(newList)
 			setNewList('')
-		} else {
-			setError('Title is required')
 		}
 	}
 
