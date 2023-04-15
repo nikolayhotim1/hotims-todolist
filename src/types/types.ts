@@ -15,6 +15,7 @@ export type FilterValues = 'all' | 'active' | 'completed'
 export type ErrorMessage = 'Title is required'
 
 export type HeaderProps = {
+	error: string | null
 	setError: (value: ErrorMessage | null) => void
 	addList: (listTitle: string) => void
 }

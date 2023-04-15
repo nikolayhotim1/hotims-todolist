@@ -2,7 +2,7 @@ import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { HeaderProps } from '../types/types'
 import inputValidator from '../utils/inputValidator'
 
-export function Header({ setError, addList }: HeaderProps) {
+export function Header({ error, setError, addList }: HeaderProps) {
 	const [newList, setNewList] = useState('')
 
 	function handleNewListChange(e: ChangeEvent<HTMLInputElement>) {
@@ -26,6 +26,7 @@ export function Header({ setError, addList }: HeaderProps) {
 			<h1>Todolist</h1>
 			<div className='add-form'>
 				<input
+					className={error ? 'error' : ''}
 					placeholder='New list'
 					onChange={handleNewListChange}
 					value={newList}

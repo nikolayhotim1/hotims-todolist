@@ -53,7 +53,7 @@ export default function App() {
 
 	return (
 		<div className='app'>
-			<Header setError={setError} addList={addList} />
+			<Header error={error} setError={setError} addList={addList} />
 			{error && <div className='error-message'>{error}</div>}
 			<div className='lists'>
 				{tasks.map(l => (
