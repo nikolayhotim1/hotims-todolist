@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/hotims-todolist/static/css/main.063ed3ca.css",
+    "main.js": "/hotims-todolist/static/js/main.b67a247b.js",
+    "static/js/787.c412baae.chunk.js": "/hotims-todolist/static/js/787.c412baae.chunk.js",
+    "index.html": "/hotims-todolist/index.html",
+    "main.063ed3ca.css.map": "/hotims-todolist/static/css/main.063ed3ca.css.map",
+    "main.b67a247b.js.map": "/hotims-todolist/static/js/main.b67a247b.js.map",
+    "787.c412baae.chunk.js.map": "/hotims-todolist/static/js/787.c412baae.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.063ed3ca.css",
+    "static/js/main.b67a247b.js"
+  ]
+}
