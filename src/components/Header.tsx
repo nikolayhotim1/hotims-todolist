@@ -1,6 +1,6 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { HeaderProps } from '../types/types'
-import inputValidator from '../utils/inputValidator'
+import inputValidator from '../helpers/inputValidator'
 
 export function Header({ error, setError, addList }: HeaderProps) {
 	const [newList, setNewList] = useState('')
@@ -11,10 +11,10 @@ export function Header({ error, setError, addList }: HeaderProps) {
 	}
 
 	function handleEnterKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-		e.key === 'Enter' && handleAddListClick()
+		e.key === 'Enter' && handleAddList()
 	}
 
-	function handleAddListClick() {
+	function handleAddList() {
 		if (inputValidator(newList, setError)) {
 			addList(newList)
 			setNewList('')
@@ -32,7 +32,7 @@ export function Header({ error, setError, addList }: HeaderProps) {
 					value={newList}
 					onKeyDown={handleEnterKeyDown}
 				/>
-				<button onClick={handleAddListClick}>Add</button>
+				<button onClick={handleAddList}>Add</button>
 			</div>
 		</div>
 	)

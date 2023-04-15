@@ -1,6 +1,6 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { ErrorMessage, FilterValues, ListProps } from '../types/types'
-import inputValidator from '../utils/inputValidator'
+import inputValidator from '../helpers/inputValidator'
 import { ListHeader } from './ListHeader'
 import { Task } from './Task'
 
@@ -18,7 +18,6 @@ export function List({
 	const [newTask, setNewTask] = useState('')
 	const [filter, setFilter] = useState<FilterValues>('all')
 	const [error, setError] = useState<ErrorMessage | null>(null)
-
 	let filteredTasks = tasks
 
 	function handleNewTaskChange(e: ChangeEvent<HTMLInputElement>) {
@@ -27,25 +26,25 @@ export function List({
 	}
 
 	function handleEnterKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-		e.key === 'Enter' && handleAddTaskClick()
+		e.key === 'Enter' && handleAddTask()
 	}
 
-	function handleAddTaskClick() {
+	function handleAddTask() {
 		if (inputValidator(newTask, setError)) {
 			addTask(id, newTask)
 			setNewTask('')
 		}
 	}
 
-	function handleAllFilterClick() {
+	function handleAllFilter() {
 		setFilter('all')
 	}
 
-	function handleActiveFilterClick() {
+	function handleActiveFilter() {
 		setFilter('active')
 	}
 
-	function handleCompletedFilterClick() {
+	function handleCompletedFilter() {
 		setFilter('completed')
 	}
 
@@ -59,7 +58,6 @@ export function List({
 		default:
 			break
 	}
-
 	return (
 		<div className='list'>
 			<div className='list-header'>
@@ -73,7 +71,7 @@ export function List({
 					value={newTask}
 					onKeyDown={handleEnterKeyDown}
 				/>
-				<button onClick={handleAddTaskClick}>Add</button>
+				<button onClick={handleAddTask}>Add</button>
 			</div>
 			{error && <div className='error-message'>{error}</div>}
 			<ul className='list-tasks'>
@@ -84,13 +82,13 @@ export function List({
 				))}
 			</ul>
 			<div className='tasks-filter'>
-				<button className={filter === 'all' ? 'active-filter' : ''} onClick={handleAllFilterClick}>
+				<button className={filter === 'all' ? 'active-filter' : ''} onClick={handleAllFilter}>
 					All
 				</button>
-				<button className={filter === 'active' ? 'active-filter' : ''} onClick={handleActiveFilterClick}>
+				<button className={filter === 'active' ? 'active-filter' : ''} onClick={handleActiveFilter}>
 					Active
 				</button>
-				<button className={filter === 'completed' ? 'active-filter' : ''} onClick={handleCompletedFilterClick}>
+				<button className={filter === 'completed' ? 'active-filter' : ''} onClick={handleCompletedFilter}>
 					Completed
 				</button>
 			</div>

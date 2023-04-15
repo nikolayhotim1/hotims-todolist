@@ -9,7 +9,7 @@ export function Task({ id, task, changeIsDone, changeTask, removeTask }: TaskPro
 		changeIsDone(id, task.id, e.currentTarget.checked)
 	}
 
-	function handleRemoveTaskClick() {
+	function handleRemoveTask() {
 		removeTask(id, task.id)
 	}
 
@@ -26,7 +26,7 @@ export function Task({ id, task, changeIsDone, changeTask, removeTask }: TaskPro
 					setTaskError={setError}
 					changeTask={changeTask}
 				/>
-				<button onClick={handleRemoveTaskClick}>Delete</button>
+				<button onClick={handleRemoveTask}>Delete</button>
 			</div>
 			{error && <div className='error-message'>{error}</div>}
 		</>

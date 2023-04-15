@@ -1,6 +1,7 @@
+import { initialTasksType } from './../types/types'
 import { v1 } from 'uuid'
 
-export const initialTasks = [
+export const initialTasks: initialTasksType = [
 	{
 		listId: v1(),
 		listTitle: 'Family',

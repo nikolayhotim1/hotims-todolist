@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useImmer } from 'use-immer'
-import './styles/App.css'
-import { Header } from './components/Header'
-import { List } from './components/List'
-import { initialTasks } from './data/initialTasks'
+import '../styles/App.css'
+import { Header } from './Header'
+import { List } from './List'
+import { initialTasks } from '../data/initialTasks'
 import { v1 } from 'uuid'
-import { ErrorMessage, ListType } from './types/types'
+import { ErrorMessage, ListType } from '../types/types'
 
 export default function App() {
 	const [tasks, updateTasks] = useImmer<ListType[]>(initialTasks)

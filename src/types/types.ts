@@ -10,6 +10,8 @@ export type ListType = {
 	listTasks: TaskType[]
 }
 
+export type initialTasksType = ListType[]
+
 export type FilterValues = 'all' | 'active' | 'completed'
 
 export type ErrorMessage = 'Title is required'

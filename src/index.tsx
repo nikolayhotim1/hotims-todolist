@@ -1,8 +1,8 @@
 import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles/index.css'
-import App from './App'
-import reportWebVitals from './reportWebVitals'
+import App from './components/App'
+import reportWebVitals from './utils/reportWebVitals'
 
 const root = createRoot(document.getElementById('root') as HTMLElement)
 root.render(

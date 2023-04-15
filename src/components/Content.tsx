@@ -1,33 +1,40 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { ListContentProps, TaskContentProps } from '../types/types'
-import inputValidator from '../utils/inputValidator'
+import inputValidator from '../helpers/inputValidator'
 
 export function Content(props: TaskContentProps | ListContentProps) {
 	const { taskContentType, taskListId, taskId, taskTitle, taskError, setTaskError, changeTask } = props as TaskContentProps
 	const { listId, listTitle, listError, setListError, changeList } = props as ListContentProps
 	const [isEditing, setIsEditing] = useState(false)
-
+	const [changedTask, setChangedTask] = useState(taskTitle)
+	const [changedList, setChangedList] = useState(listTitle)
 	let content: JSX.Element
 
-	function handleTaskChange(e: ChangeEvent<HTMLInputElement>) {
-		changeTask(taskListId, taskId, e.target.value)
-		setTaskError(null)
-	}
-
-	function handleListChange(e: ChangeEvent<HTMLInputElement>) {
-		changeList(listId, e.target.value)
-		setListError(null)
+	function handleChange(e: ChangeEvent<HTMLInputElement>) {
+		if (taskContentType) {
+			setChangedTask(e.currentTarget.value)
+			setTaskError(null)
+		} else {
+			setChangedList(e.currentTarget.value)
+			setListError(null)
+		}
 	}
 
 	function handleEnterKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-		e.key === 'Enter' && setIsEditing(false)
+		e.key === 'Enter' && handleSaveClick()
 	}
 
 	function handleSaveClick() {
 		if (taskContentType) {
-			inputValidator(taskTitle, setTaskError) && setIsEditing(false)
+			if (inputValidator(changedTask, setTaskError)) {
+				changeTask(taskListId, taskId, changedTask)
+				setIsEditing(false)
+			}
 		} else {
-			inputValidator(listTitle, setListError) && setIsEditing(false)
+			if (inputValidator(changedList, setListError)) {
+				changeList(listId, changedList)
+				setIsEditing(false)
+			}
 		}
 	}
 
@@ -42,8 +49,8 @@ export function Content(props: TaskContentProps | ListContentProps) {
 					<input
 						className={taskError ? 'error' : ''}
 						placeholder='Task title'
-						value={taskTitle}
-						onChange={handleTaskChange}
+						value={changedTask}
+						onChange={handleChange}
 						onKeyDown={handleEnterKeyDown}
 					/>
 				) : (
@@ -51,8 +58,8 @@ export function Content(props: TaskContentProps | ListContentProps) {
 						<input
 							className={listError ? 'error' : ''}
 							placeholder='List title'
-							value={listTitle}
-							onChange={handleListChange}
+							value={changedList}
+							onChange={handleChange}
 							onKeyDown={handleEnterKeyDown}
 						/>
 					</h2>
@@ -68,6 +75,5 @@ export function Content(props: TaskContentProps | ListContentProps) {
 			</>
 		)
 	}
-
 	return <>{content}</>
 }
