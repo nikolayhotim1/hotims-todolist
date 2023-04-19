@@ -7,10 +7,11 @@ export type TaskType = {
 export type ListType = {
 	listId: string
 	listTitle: string
-	listTasks: TaskType[]
 }
 
-export type initialTasksType = ListType[]
+export type initialTasksType = { [x: string]: TaskType[] }
+
+export type initialListsType = ListType[]
 
 export type FilterValues = 'all' | 'active' | 'completed'
 
@@ -20,6 +21,18 @@ export type HeaderProps = {
 	error: string | null
 	setError: (value: ErrorMessage | null) => void
 	addList: (listTitle: string) => void
+}
+
+export type ListProps = {
+	id: string
+	title: string
+	tasks: TaskType[]
+	addTask: (listId: string, title: string) => void
+	changeIsDone: (listId: string, id: string, isDone: boolean) => void
+	changeTask: (listId: string, id: string, title: string) => void
+	changeList: (listId: string, listTitle: string) => void
+	removeTask: (listId: string, id: string) => void
+	removeList: (listId: string) => void
 }
 
 export type ListHeaderProps = {
@@ -35,18 +48,6 @@ export type TaskProps = {
 	changeIsDone: (listId: string, id: string, isDone: boolean) => void
 	changeTask: (listId: string, id: string, title: string) => void
 	removeTask: (listId: string, id: string) => void
-}
-
-export type ListProps = {
-	id: string
-	title: string
-	tasks: TaskType[]
-	addTask: (listId: string, title: string) => void
-	changeIsDone: (listId: string, id: string, isDone: boolean) => void
-	changeTask: (listId: string, id: string, title: string) => void
-	changeList: (listId: string, listTitle: string) => void
-	removeTask: (listId: string, id: string) => void
-	removeList: (listId: string) => void
 }
 
 export type TaskContentProps = {

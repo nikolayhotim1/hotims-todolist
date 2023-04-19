@@ -3,52 +3,69 @@ import { useImmer } from 'use-immer'
 import '../styles/App.css'
 import { Header } from './Header'
 import { List } from './List'
-import { initialTasks } from '../data/initialTasks'
+import { initialTasks, initialLists } from '../data/data'
 import { v1 } from 'uuid'
-import { ErrorMessage, ListType } from '../types/types'
+import { ListType, initialTasksType, ErrorMessage } from '../types/types'
 
 export default function App() {
-	const [tasks, updateTasks] = useImmer<ListType[]>(initialTasks)
+	const [tasks, setTasks] = useImmer<initialTasksType>(initialTasks)
+	const [lists, setLists] = useImmer<ListType[]>(initialLists)
 	const [error, setError] = useState<ErrorMessage | null>(null)
 
 	function addTask(listId: string, title: string) {
-		updateTasks(draft => {
-			draft.map(l => (l.listId !== listId ? l : l.listTasks.push({ id: v1(), title: title.trim(), isDone: false })))
+		setTasks(draft => {
+			draft[listId].push({ id: v1(), title: title.trim(), isDone: false })
 		})
 	}
 
 	function addList(listTitle: string) {
-		updateTasks(draft => {
-			draft.push({ listId: v1(), listTitle: listTitle, listTasks: [] })
+		const listId = v1()
+		setLists(draft => {
+			draft.push({ listId: listId, listTitle: listTitle })
+		})
+		setTasks(draft => {
+			draft[listId] = []
 		})
 	}
 
 	function changeIsDone(listId: string, id: string, isDone: boolean) {
-		updateTasks(draft => {
-			draft.map(l => (l.listId !== listId ? l : l.listTasks.map(lt => (lt.id !== id ? lt : (lt.isDone = isDone)))))
+		setTasks(draft => {
+			const task = draft[listId].find(t => t.id === id)
+			if (task) {
+				task.isDone = isDone
+			}
 		})
 	}
 
 	function changeTask(listId: string, id: string, title: string) {
-		updateTasks(draft => {
-			draft.map(l => (l.listId !== listId ? l : l.listTasks.map(lt => (lt.id !== id ? lt : (lt.title = title)))))
+		setTasks(draft => {
+			const task = draft[listId].find(t => t.id === id)
+			if (task) {
+				task.title = title
+			}
 		})
 	}
 
 	function changeList(listId: string, listTitle: string) {
-		updateTasks(draft => {
-			draft.map(l => (l.listId !== listId ? l : (l.listTitle = listTitle)))
+		setLists(draft => {
+			const list = draft.find(l => l.listId === listId)
+			if (list) {
+				list.listTitle = listTitle
+			}
 		})
 	}
 
 	function removeTask(listId: string, id: string) {
-		updateTasks(draft => {
-			draft.map(l => (l.listId !== listId ? l : (l.listTasks = l.listTasks.filter(lt => lt.id !== id))))
+		setTasks(draft => {
+			draft[listId] = draft[listId].filter(t => t.id !== id)
 		})
 	}
 
 	function removeList(listId: string) {
-		updateTasks(tasks.filter(l => l.listId !== listId))
+		setLists(lists.filter(l => l.listId !== listId))
+		setTasks(draft => {
+			delete draft[listId]
+		})
 	}
 
 	return (
@@ -56,12 +73,12 @@ export default function App() {
 			<Header error={error} setError={setError} addList={addList} />
 			{error && <div className='error-message'>{error}</div>}
 			<div className='lists'>
-				{tasks.map(l => (
+				{lists.map(l => (
 					<List
 						key={l.listId}
 						id={l.listId}
 						title={l.listTitle}
-						tasks={l.listTasks}
+						tasks={tasks[l.listId]}
 						addTask={addTask}
 						changeIsDone={changeIsDone}
 						changeTask={changeTask}
