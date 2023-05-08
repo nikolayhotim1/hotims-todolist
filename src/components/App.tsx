@@ -5,11 +5,11 @@ import { Header } from './Header'
 import { List } from './List'
 import { initialTasks, initialLists } from '../data/data'
 import { v1 } from 'uuid'
-import { ListType, initialTasksType, ErrorMessage } from '../types/types'
+import { initialTasksType, initialListsType, ErrorMessage } from '../types/types'
 
 export default function App() {
 	const [tasks, setTasks] = useImmer<initialTasksType>(initialTasks)
-	const [lists, setLists] = useImmer<ListType[]>(initialLists)
+	const [lists, setLists] = useImmer<initialListsType>(initialLists)
 	const [error, setError] = useState<ErrorMessage | null>(null)
 
 	function addTask(listId: string, title: string) {
