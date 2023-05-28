@@ -17,9 +17,7 @@ export type FilterValues = 'all' | 'active' | 'completed'
 
 export type ErrorMessage = 'Title is required'
 
-export type HeaderProps = {
-	error: string | null
-	setError: (value: ErrorMessage | null) => void
+export type AppHeaderProps = {
 	addList: (listTitle: string) => void
 }
 
@@ -38,6 +36,7 @@ export type ListProps = {
 export type ListHeaderProps = {
 	id: string
 	title: string
+	addTask: (listId: string, title: string) => void
 	changeList: (listId: string, listTitle: string) => void
 	removeList: (listId: string) => void
 }
@@ -66,4 +65,9 @@ export type ListContentProps = {
 	listError: string | null
 	setListError: (value: ErrorMessage | null) => void
 	changeList: (listId: string, listTitle: string) => void
+}
+
+export type AddFormProps = {
+	content: 'task' | 'list'
+	onAdd: (title: string) => void
 }

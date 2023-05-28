@@ -1,16 +1,14 @@
-import React, { useState } from 'react'
 import { useImmer } from 'use-immer'
 import '../styles/App.css'
-import { Header } from './Header'
+import { AppHeader } from './AppHeader'
 import { List } from './List'
 import { initialTasks, initialLists } from '../data/data'
 import { v1 } from 'uuid'
-import { initialTasksType, initialListsType, ErrorMessage } from '../types/types'
+import { initialTasksType, initialListsType } from '../types/types'
 
 export default function App() {
 	const [tasks, setTasks] = useImmer<initialTasksType>(initialTasks)
 	const [lists, setLists] = useImmer<initialListsType>(initialLists)
-	const [error, setError] = useState<ErrorMessage | null>(null)
 
 	function addTask(listId: string, title: string) {
 		setTasks(draft => {
@@ -70,8 +68,7 @@ export default function App() {
 
 	return (
 		<div className='app'>
-			<Header error={error} setError={setError} addList={addList} />
-			{error && <div className='error-message'>{error}</div>}
+			<AppHeader addList={addList} />
 			<div className='lists'>
 				{lists.map(l => (
 					<List

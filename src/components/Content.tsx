@@ -1,4 +1,4 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { ListContentProps, TaskContentProps } from '../types/types'
 import inputValidator from '../helpers/inputValidator'
 

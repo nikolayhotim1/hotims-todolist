@@ -1,5 +1,5 @@
 .app,
-.header {
+.app-header {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -19,7 +19,7 @@
 	width: 289px;
 }
 
-.list-header {
+.list-title {
 	display: flex;
 	align-items: center;
 	column-gap: 5px;

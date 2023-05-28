@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { ErrorMessage, TaskProps } from '../types/types'
 import { Content } from './Content'
 

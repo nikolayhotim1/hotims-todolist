@@ -1,6 +1,5 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
-import { ErrorMessage, FilterValues, ListProps } from '../types/types'
-import inputValidator from '../helpers/inputValidator'
+import { useState } from 'react'
+import { FilterValues, ListProps } from '../types/types'
 import { ListHeader } from './ListHeader'
 import { Task } from './Task'
 
@@ -15,26 +14,8 @@ export function List({
 	removeTask,
 	removeList
 }: ListProps) {
-	const [newTask, setNewTask] = useState('')
 	const [filter, setFilter] = useState<FilterValues>('all')
-	const [error, setError] = useState<ErrorMessage | null>(null)
 	let filteredTasks = tasks
-
-	function handleNewTaskChange(e: ChangeEvent<HTMLInputElement>) {
-		setNewTask(e.currentTarget.value)
-		setError(null)
-	}
-
-	function handleEnterKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-		e.key === 'Enter' && handleAddTask()
-	}
-
-	function handleAddTask() {
-		if (inputValidator(newTask, setError)) {
-			addTask(id, newTask)
-			setNewTask('')
-		}
-	}
 
 	function handleAllFilter() {
 		setFilter('all')
@@ -60,20 +41,9 @@ export function List({
 	}
 	return (
 		<div className='list'>
-			<div className='list-header'>
-				<ListHeader id={id} title={title} changeList={changeList} removeList={removeList} />
+			<div>
+				<ListHeader id={id} title={title} addTask={addTask} changeList={changeList} removeList={removeList} />
 			</div>
-			<div className='add-form'>
-				<input
-					className={error ? 'error' : ''}
-					placeholder='New task'
-					onChange={handleNewTaskChange}
-					value={newTask}
-					onKeyDown={handleEnterKeyDown}
-				/>
-				<button onClick={handleAddTask}>Add</button>
-			</div>
-			{error && <div className='error-message'>{error}</div>}
 			<ul className='list-tasks'>
 				{filteredTasks.map(t => (
 					<li key={t.id} className={t.isDone ? 'is-done' : ''}>
