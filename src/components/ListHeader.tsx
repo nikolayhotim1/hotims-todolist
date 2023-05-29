@@ -14,10 +14,16 @@ export function ListHeader({ id, title, addTask, changeList, removeList }: ListH
 		addTask(id, title)
 	}
 
+	function handleChangeList(title: string) {
+		changeList(id, title)
+	}
+
 	return (
 		<>
 			<div className='list-title'>
-				<Content listId={id} listTitle={title} listError={error} setListError={setError} changeList={changeList} />
+				<h2 className='list-title'>
+					<Content content='list' title={title} error={error} setError={setError} onChange={handleChangeList} />
+				</h2>
 				<button onClick={handleRemoveList}>Delete</button>
 				{error && <div className='error-message'>{error}</div>}
 			</div>

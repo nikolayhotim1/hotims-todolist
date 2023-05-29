@@ -1,23 +1,14 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react'
-import { ListContentProps, TaskContentProps } from '../types/types'
+import { ContentProps } from '../types/types'
 import inputValidator from '../helpers/inputValidator'
 
-export function Content(props: TaskContentProps | ListContentProps) {
-	const { taskContentType, taskListId, taskId, taskTitle, taskError, setTaskError, changeTask } = props as TaskContentProps
-	const { listId, listTitle, listError, setListError, changeList } = props as ListContentProps
+export function Content({ content, title, error, setError, onChange }: ContentProps) {
 	const [isEditing, setIsEditing] = useState(false)
-	const [changedTask, setChangedTask] = useState(taskTitle)
-	const [changedList, setChangedList] = useState(listTitle)
-	let content: JSX.Element
+	const [newTitle, setNewTitle] = useState('')
 
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {
-		if (taskContentType) {
-			setChangedTask(e.currentTarget.value)
-			setTaskError(null)
-		} else {
-			setChangedList(e.currentTarget.value)
-			setListError(null)
-		}
+		setNewTitle(e.currentTarget.value)
+		setError(null)
 	}
 
 	function handleEnterKeyDown(e: KeyboardEvent<HTMLInputElement>) {
@@ -25,55 +16,32 @@ export function Content(props: TaskContentProps | ListContentProps) {
 	}
 
 	function handleSaveClick() {
-		if (taskContentType) {
-			if (inputValidator(changedTask, setTaskError)) {
-				changeTask(taskListId, taskId, changedTask)
-				setIsEditing(false)
-			}
-		} else {
-			if (inputValidator(changedList, setListError)) {
-				changeList(listId, changedList)
-				setIsEditing(false)
-			}
+		if (inputValidator(newTitle, setError)) {
+			onChange(newTitle)
+			setIsEditing(false)
 		}
 	}
 
 	function handleEditClick() {
+		setNewTitle(title)
 		setIsEditing(true)
 	}
 
-	if (isEditing) {
-		content = (
-			<>
-				{taskContentType ? (
-					<input
-						className={taskError ? 'error' : ''}
-						placeholder='Task title'
-						value={changedTask}
-						onChange={handleChange}
-						onKeyDown={handleEnterKeyDown}
-					/>
-				) : (
-					<h2>
-						<input
-							className={listError ? 'error' : ''}
-							placeholder='List title'
-							value={changedList}
-							onChange={handleChange}
-							onKeyDown={handleEnterKeyDown}
-						/>
-					</h2>
-				)}
-				<button onClick={handleSaveClick}>Save</button>
-			</>
-		)
-	} else {
-		content = (
-			<>
-				{taskContentType ? <>{taskTitle}</> : <h2>{listTitle}</h2>}
-				<button onClick={handleEditClick}>Edit</button>
-			</>
-		)
-	}
-	return <>{content}</>
+	return isEditing ? (
+		<>
+			<input
+				className={error ? 'error' : ''}
+				placeholder={content === 'task' ? 'Task title' : 'List title'}
+				value={newTitle}
+				onChange={handleChange}
+				onKeyDown={handleEnterKeyDown}
+			/>
+			<button onClick={handleSaveClick}>Save</button>
+		</>
+	) : (
+		<>
+			{title}
+			<button onClick={handleEditClick}>Edit</button>
+		</>
+	)
 }

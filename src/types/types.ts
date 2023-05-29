@@ -1,3 +1,5 @@
+export type ContentType = 'task' | 'list'
+
 export type TaskType = {
 	id: string
 	title: string
@@ -49,25 +51,15 @@ export type TaskProps = {
 	removeTask: (listId: string, id: string) => void
 }
 
-export type TaskContentProps = {
-	taskContentType: true
-	taskListId: string
-	taskId: string
-	taskTitle: string
-	taskError: string | null
-	setTaskError: (value: ErrorMessage | null) => void
-	changeTask: (listId: string, id: string, title: string) => void
-}
-
-export type ListContentProps = {
-	listId: string
-	listTitle: string
-	listError: string | null
-	setListError: (value: ErrorMessage | null) => void
-	changeList: (listId: string, listTitle: string) => void
-}
-
 export type AddFormProps = {
-	content: 'task' | 'list'
+	content: ContentType
 	onAdd: (title: string) => void
+}
+
+export type ContentProps = {
+	content: ContentType
+	title: string
+	error: string | null
+	setError: (value: ErrorMessage | null) => void
+	onChange: (title: string) => void
 }

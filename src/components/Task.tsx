@@ -13,19 +13,15 @@ export function Task({ id, task, changeIsDone, changeTask, removeTask }: TaskPro
 		removeTask(id, task.id)
 	}
 
+	function handleChangeTask(title: string) {
+		changeTask(id, task.id, title)
+	}
+
 	return (
 		<>
 			<div className='task'>
 				<input placeholder='Is done?' type='checkbox' checked={task.isDone} onChange={handleIsDoneChange} />
-				<Content
-					taskContentType
-					taskListId={id}
-					taskId={task.id}
-					taskTitle={task.title}
-					taskError={error}
-					setTaskError={setError}
-					changeTask={changeTask}
-				/>
+				<Content content='task' title={task.title} error={error} setError={setError} onChange={handleChangeTask} />
 				<button onClick={handleRemoveTask}>Delete</button>
 			</div>
 			{error && <div className='error-message'>{error}</div>}
